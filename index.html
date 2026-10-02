@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Farzaneh Jalalypour – Data Scientist &amp; ML Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0E1628;
+      --bg2: #142038;
+      --card: rgba(255,255,255,0.045);
+      --line: rgba(255,255,255,0.10);
+      --ink: #EAF0F8;
+      --muted: #9AA8BD;
+      --cyan: #5EE0D0;
+      --violet: #A78BFA;
+      --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+      --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+    a { color: var(--cyan); }
+    a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Background network covers the whole page */
+    #net { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(900px 500px at 85% 15%, rgba(167,139,250,0.16), transparent 60%),
+                  radial-gradient(700px 500px at 10% 95%, rgba(94,224,208,0.12), transparent 60%); }
+    nav, main, footer { position: relative; z-index: 1; }
+
+    /* Nav */
+    nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: rgba(14,22,40,0.75); border-bottom: 1px solid var(--line); }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-family: var(--display); font-weight: 800; font-size: 1.35rem; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+    .logo span { color: var(--cyan); }
+    nav ul { list-style: none; display: flex; align-items: center; gap: 26px; margin: 0; padding: 0; }
+    nav ul a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    nav ul a:hover { color: var(--ink); }
+    nav ul a.cta { color: #0E1628; background: linear-gradient(100deg, var(--cyan), var(--violet)); padding: 8px 18px; border-radius: 999px; font-weight: 600; }
+    @media (max-width: 700px) { nav ul { gap: 14px; } nav ul .hide-sm { display: none; } }
+
+    nav ul { gap: 18px; }
+    nav ul a.pill { color: #FFFFFF; background: #7C5CE0; border: none; padding: 8px 15px; border-radius: 999px; font-weight: 600; font-size: 0.88rem; transition: background .2s; }
+    nav ul a.pill:hover { background: #9B7DF2; color: #FFFFFF; }
+    nav ul a.pill.cta { background: #7C5CE0; color: #FFFFFF; }
+    @media (max-width: 1000px) { nav ul .hide-md { display: none; } }
+    @media (max-width: 560px) { nav ul { gap: 6px; } nav ul a.pill { padding: 6px 10px; font-size: 0.78rem; } nav ul a.pill.cta { display: none; } }
+    /* Hero: photo left, info right */
+    .hero { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 48px; align-items: center; padding: 48px 0 32px; }
+    .photo { width: 100%; max-width: 320px; aspect-ratio: 4 / 5; object-fit: cover; display: block;
+      border-radius: 220px 220px 28px 28px; border: 6px solid rgba(255,255,255,0.9);
+      box-shadow: 20px 20px 0 rgba(167,139,250,0.35); }
+    .hello { color: var(--cyan); font-weight: 600; margin: 0 0 8px; font-size: 1.1rem; }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.3rem, 5vw, 3.7rem); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 14px;
+      background: linear-gradient(100deg, var(--ink) 35%, var(--violet) 80%, var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .role { font-family: var(--display); font-size: 1.2rem; font-weight: 500; margin: 0 0 12px; }
+    .lead { color: var(--muted); font-size: 1.02rem; max-width: 32em; margin: 0 0 18px; }
+    .facts { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--muted); font-size: 0.95rem; }
+    .facts li::before { content: "●"; color: var(--cyan); margin-right: 8px; font-size: 0.7rem; vertical-align: 2px; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { padding: 12px 24px; border-radius: 999px; font-weight: 600; text-decoration: none; border: 1.5px solid var(--line); color: var(--ink); transition: border-color .2s, transform .2s; }
+    .btn:hover { border-color: var(--cyan); transform: translateY(-2px); }
+    .btn.primary { background: linear-gradient(100deg, var(--cyan), var(--violet)); color: #0E1628; border-color: transparent; }
+    @media (max-width: 820px) { .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 28px; } .photo { max-width: 220px; } }
+
+    /* Sections */
+    section { padding: 30px 0; }
+    h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: -0.02em; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 22px; max-width: 38em; }
+    h3 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin: 0 0 6px; }
+
+    /* Journey: small horizontal line */
+    .line-scroll { overflow-x: auto; padding-bottom: 8px; }
+    .line { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(170px, 1fr)); position: relative; min-width: 540px; }
+    .line::before { content: ""; position: absolute; left: 0; right: 0; top: 33px; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet)); opacity: 0.7; }
+    .line li { position: relative; text-align: center; padding: 0 6px; }
+    .line .yr { display: block; font-family: var(--display); font-weight: 700; font-size: 0.85rem; color: var(--cyan); height: 22px; }
+    .line .dot { display: block; width: 14px; height: 14px; margin: 3px auto 12px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cyan); position: relative; }
+    .line li.edu .dot { border-color: var(--violet); }
+    .line li.edu .yr { color: var(--violet); }
+    .line li.now .dot { background: var(--cyan); box-shadow: 0 0 0 5px rgba(94,224,208,0.2); }
+    .line b { display: block; font-size: 0.86rem; line-height: 1.3; margin-bottom: 3px; }
+    .line small { display: block; color: var(--muted); font-size: 0.76rem; line-height: 1.35; }
+    .legend { display: flex; gap: 18px; margin-top: 18px; color: var(--muted); font-size: 0.82rem; }
+    .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 2px solid var(--cyan); }
+    .legend span.e::before { border-color: var(--violet); }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+    .sk { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px 24px; }
+    .sk h3 { font-size: 1.05rem; color: var(--cyan); margin-bottom: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+    .chips li { padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid var(--line); font-weight: 500; font-size: 0.9rem; }
+
+    /* Projects */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; transition: border-color .25s, transform .25s; }
+    .card:hover { border-color: rgba(94,224,208,0.45); transform: translateY(-4px); }
+    .card svg { display: block; width: 100%; height: 130px; background: linear-gradient(135deg, rgba(94,224,208,0.10), rgba(167,139,250,0.14)); }
+    .card .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .card h3 { font-size: 1.1rem; }
+    .card p { font-size: 0.93rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .card .chips li { padding: 4px 12px; font-size: 0.8rem; }
+    .card .link { margin-top: auto; padding-top: 6px; font-weight: 600; text-decoration: none; }
+    .card .link:hover { text-decoration: underline; }
+
+    /* Certificates */
+    .certs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+    .cert { display: flex; align-items: center; gap: 16px; padding: 16px 18px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
+    .badge { width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1rem; color: #0E1628; }
+    .badge.dc { background: var(--cyan); }
+    .badge.cs { background: var(--violet); }
+    .badge.db { background: #F5D76E; }
+    .badge.sq { background: #EAF0F8; font-size: 0.85rem; }
+    .cert h3 { font-size: 1rem; margin: 0 0 2px; }
+    .cert p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+    .cert a { font-size: 0.88rem; font-weight: 600; text-decoration: none; }
+    .cert a:hover { text-decoration: underline; }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact .sub { margin-left: auto; margin-right: auto; }
+    .contact .buttons { justify-content: center; }
+    footer { padding: 22px 0; text-align: center; color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); }
+
+    .card.soon { border-style: dashed; background: transparent; justify-content: center; align-items: center; text-align: center; min-height: 200px; }
+    .card.soon:hover { transform: none; }
+    .card.soon .body { justify-content: center; align-items: center; }
+    .card.wide { grid-column: 1 / -1; flex-direction: row; }
+    .card.wide svg { width: 44%; flex-shrink: 0; height: auto; }
+    .card .role { color: var(--violet); font-size: 0.9rem; font-weight: 600; }
+    .card .links { margin-top: auto; padding-top: 2px; display: flex; flex-wrap: wrap; gap: 20px; }
+    .card .links a { font-weight: 600; text-decoration: none; }
+    .card .links a:hover { text-decoration: underline; }
+    @media (max-width: 760px) { .card.wide { flex-direction: column; } .card.wide svg { width: 100%; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn, .card { transition: none; } }
+  </style>
+</head>
+<body>
+  <canvas id="net" aria-hidden="true"></canvas>
+
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="#">FJ<span>.</span></a>
+      <ul>
+        <li class="hide-md"><a href="#journey">Journey</a></li>
+        <li class="hide-md"><a href="#skills">Skills</a></li>
+        <li class="hide-md"><a href="#certificates">Certificates</a></li>
+        <li class="hide-md"><a href="#contact">Contact</a></li>
+        <li><a class="pill cta" href="#projects">See my projects</a></li>
+        <li><a class="pill" href="https://www.linkedin.com/in/farzaneh-jalalypour-87a903145">LinkedIn</a></li>
+        <li><a class="pill" href="https://www.kaggle.com/cocojp">Kaggle</a></li>
+        <li><a class="pill" href="https://github.com/FJP2026">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="wrap">
+
+    <!-- HERO: photo left, info right -->
+    <header class="hero">
+      <!-- To change the photo: upload a new image to the repository and change src -->
+      <img class="photo" src="cat.jpg" alt="Black and white cat (placeholder photo)">
+      <div>
+        <p class="hello">Hi, I'm</p>
+        <h1>Farzaneh Jalalypour</h1>
+        <p class="role">Data Scientist · ML Engineer</p>
+        <p class="lead">I build machine learning, LLM and generative AI solutions for healthcare and life science data, and I enjoy explaining the results clearly to the people who use them.</p>
+        <ul class="facts">
+          <li>Gothenburg, Sweden</li>
+          <li>Open to work</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- JOURNEY as a road -->
+    <section id="journey">
+      <h2>My journey</h2>
+      <p class="sub">My work in Sweden, from high-performance computing to data science and AI.</p>
+      <div class="line-scroll">
+        <ol class="line">
+          <li><span class="yr">2020</span><span class="dot"></span><b>Internship</b><small>High-performance computing · PDC, KTH · Stockholm, Sweden</small></li>
+          <li><span class="yr">2021–24</span><span class="dot"></span><b>Computational Researcher &amp; Software User Support</b><small>KTH / SciLifeLab · Stockholm, Sweden</small></li>
+          <li class="now"><span class="yr">2024–now</span><span class="dot"></span><b>Data Scientist in Life Science</b><small>ML / AI · Chalmers · Gothenburg, Sweden</small></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <p class="sub">The tools I use to take data from raw to results.</p>
+      <div class="skills">
+        <div class="sk">
+          <h3>Machine learning</h3>
+          <ul class="chips"><li>Supervised learning</li><li>Clustering</li><li>Deep learning</li><li>Predictive modelling</li><li>Model validation</li></ul>
+        </div>
+        <div class="sk">
+          <h3>Generative AI and LLMs</h3>
+          <ul class="chips"><li>LLMs</li><li>Agentic workflows</li><li>Prompt engineering</li><li>Embeddings</li><li>NLP</li><li>Recommender systems</li></ul>
+        </div>
+        <div class="sk">
+          <h3>Python and data</h3>
+          <ul class="chips"><li>Python</li><li>PyTorch</li><li>TensorFlow</li><li>scikit-learn</li><li>pandas</li><li>NumPy</li><li>SQL</li></ul>
+        </div>
+        <div class="sk">
+          <h3>Cloud and tools</h3>
+          <ul class="chips"><li>Azure ML</li><li>Databricks</li><li>Git</li><li>Jupyter</li><li>Linux</li><li>MLOps basics</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <p class="sub">Applied AI with real clinical data, plus machine learning models built from scratch.</p>
+      <div class="grid">
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="Two-stage pipeline: clinical trial protocols go to Stage 1 cluster prediction, then Stage 2 endpoint ranking">
+            <g font-family="DM Sans, Segoe UI, sans-serif" font-size="11" text-anchor="middle">
+              <rect x="22" y="78" width="88" height="74" rx="10" fill="rgba(255,255,255,0.06)" stroke="#9AA8BD" stroke-opacity="0.5"/>
+              <rect x="36" y="92" width="60" height="6" rx="3" fill="#EAF0F8" opacity="0.7"/>
+              <rect x="36" y="104" width="46" height="6" rx="3" fill="#EAF0F8" opacity="0.45"/>
+              <rect x="36" y="116" width="54" height="6" rx="3" fill="#EAF0F8" opacity="0.45"/>
+              <text x="66" y="140" fill="#EAF0F8">Trial protocols</text>
+              <path d="M112 115 H136" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#ar)"/>
+              <rect x="140" y="70" width="90" height="90" rx="12" fill="rgba(94,224,208,0.14)" stroke="#5EE0D0"/>
+              <circle cx="168" cy="102" r="9" fill="#5EE0D0" opacity="0.8"/><circle cx="194" cy="96" r="6" fill="#5EE0D0" opacity="0.5"/><circle cx="202" cy="116" r="8" fill="#5EE0D0" opacity="0.65"/>
+              <text x="185" y="142" fill="#EAF0F8">Stage 1</text><text x="185" y="155" fill="#9AA8BD" font-size="9.5">endpoint clusters</text>
+              <path d="M232 115 H256" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#ar2)"/>
+              <rect x="260" y="70" width="84" height="90" rx="12" fill="rgba(167,139,250,0.15)" stroke="#A78BFA"/>
+              <rect x="274" y="86" width="56" height="7" rx="3.5" fill="#A78BFA"/>
+              <rect x="274" y="99" width="44" height="7" rx="3.5" fill="#A78BFA" opacity="0.7"/>
+              <rect x="274" y="112" width="32" height="7" rx="3.5" fill="#A78BFA" opacity="0.45"/>
+              <text x="302" y="142" fill="#EAF0F8">Stage 2</text><text x="302" y="155" fill="#9AA8BD" font-size="9.5">ranked endpoints</text>
+            </g>
+            <defs>
+              <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5EE0D0"/></marker>
+              <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#A78BFA"/></marker>
+            </defs>
+          </svg>
+          <div class="body">
+            <p class="role">With AstraZeneca and Evinova</p>
+            <h3>AI-powered recommender system for clinical trial protocol design</h3>
+            <p>Recommends secondary endpoints for heart failure trial protocols, learned from past trials.</p>
+            <p><strong style="color:var(--ink)">Supervisor</strong></p>
+            <ul class="chips"><li>NLP</li><li>Embeddings</li><li>XGBoost</li><li>Clinical data</li></ul>
+            <div class="links">
+              <a href="https://odr.chalmers.se/items/9ae973e1-05e1-4bcb-b410-3121aa00ff3a">Read more</a>
+              <a href="https://github.com/ChalmersKhatiri/thesis-data-and-code">View code on GitHub</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="Several overlapping shapes of one flexible molecule">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+              <path d="M70 140 L110 100 L150 120 L190 85 L230 110 L270 75 L300 95" stroke="#5EE0D0" opacity="0.9"/>
+              <path d="M70 140 L112 112 L150 140 L192 110 L232 132 L272 104 L300 120" stroke="#A78BFA" opacity="0.8"/>
+              <path d="M70 140 L106 92 L148 98 L186 66 L228 82 L266 58 L300 70" stroke="#EAF0F8" opacity="0.35"/>
+            </g>
+            <circle cx="70" cy="140" r="16" fill="rgba(94,224,208,0.3)" stroke="#5EE0D0"/>
+            <circle cx="300" cy="95" r="14" fill="rgba(167,139,250,0.3)" stroke="#A78BFA"/>
+            <circle cx="300" cy="120" r="14" fill="rgba(167,139,250,0.18)" stroke="#A78BFA" stroke-opacity="0.6"/>
+            <circle cx="300" cy="70" r="14" fill="rgba(255,255,255,0.06)" stroke="#EAF0F8" stroke-opacity="0.4"/>
+          </svg>
+          <div class="body">
+            <h3>PROTAC conformational analysis</h3>
+            <p>Exploring the different shapes PROTAC molecules can take, to better understand how they work.</p>
+            <p><strong style="color:var(--ink)">Project lead</strong></p>
+            <ul class="chips"><li>PROTACs</li><li>Conformations</li><li>Data analysis</li></ul>
+            <div class="links">
+              <span style="color:var(--muted); font-weight:600">Paper and code coming soon</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="Protein movement vectors grouped into three clusters">
+            <ellipse cx="80" cy="113" rx="48" ry="42" fill="rgba(94,224,208,0.10)" stroke="#5EE0D0" stroke-dasharray="4 5" stroke-opacity="0.7"/>
+            <ellipse cx="180" cy="113" rx="48" ry="42" fill="rgba(167,139,250,0.10)" stroke="#A78BFA" stroke-dasharray="4 5" stroke-opacity="0.7"/>
+            <ellipse cx="280" cy="113" rx="48" ry="42" fill="rgba(255,255,255,0.04)" stroke="#EAF0F8" stroke-dasharray="4 5" stroke-opacity="0.4"/>
+            <g stroke-linecap="round">
+              <line x1="56" y1="96" x2="68" y2="82" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="86" y1="90" x2="101" y2="80" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="70" y1="116" x2="83" y2="103" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="100" y1="112" x2="116" y2="104" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="58" y1="132" x2="73" y2="122" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="90" y1="134" x2="102" y2="121" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#av)"/>
+              <line x1="156" y1="96" x2="174" y2="98" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="186" y1="90" x2="203" y2="97" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="170" y1="116" x2="188" y2="119" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="200" y1="112" x2="216" y2="120" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="158" y1="132" x2="175" y2="138" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="190" y1="134" x2="208" y2="136" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#bv)"/>
+              <line x1="258" y1="98" x2="244" y2="86" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+              <line x1="288" y1="92" x2="278" y2="77" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+              <line x1="272" y1="118" x2="259" y2="105" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+              <line x1="302" y1="114" x2="294" y2="98" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+              <line x1="260" y1="134" x2="250" y2="119" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+              <line x1="292" y1="136" x2="279" y2="124" stroke="#EAF0F8" stroke-width="2.5" marker-end="url(#wv)"/>
+            </g>
+            <defs>
+              <marker id="av" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5EE0D0"/></marker>
+              <marker id="bv" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#A78BFA"/></marker>
+              <marker id="wv" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#EAF0F8"/></marker>
+            </defs>
+          </svg>
+          <div class="body">
+            <h3>Perturbation response clustering of protein motions</h3>
+            <p>An unsupervised machine learning framework that clusters protein movement vectors after a perturbation, to explore how proteins change shape.</p>
+            <p><strong style="color:var(--ink)">Project lead</strong></p>
+            <ul class="chips"><li>Unsupervised learning</li><li>Clustering</li><li>Protein dynamics</li></ul>
+            <div class="links">
+              <span style="color:var(--muted); font-weight:600">Paper and code coming soon</span>
+            </div>
+          </div>
+        </article>
+
+
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="Scientific papers go into an LLM agent, which outputs a structured data table">
+            <g font-family="DM Sans, Segoe UI, sans-serif" font-size="11" text-anchor="middle">
+              <rect x="30" y="80" width="62" height="78" rx="8" fill="rgba(255,255,255,0.06)" stroke="#9AA8BD" stroke-opacity="0.5"/>
+              <rect x="22" y="72" width="62" height="78" rx="8" fill="#1A263D" stroke="#9AA8BD" stroke-opacity="0.6"/>
+              <rect x="32" y="84" width="42" height="5" rx="2.5" fill="#EAF0F8" opacity="0.7"/>
+              <rect x="32" y="95" width="34" height="5" rx="2.5" fill="#EAF0F8" opacity="0.45"/>
+              <rect x="32" y="106" width="40" height="5" rx="2.5" fill="#EAF0F8" opacity="0.45"/>
+              <text x="54" y="138" fill="#EAF0F8">Papers</text>
+              <path d="M98 115 H130" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#ar3)"/>
+              <circle cx="180" cy="112" r="44" fill="rgba(94,224,208,0.14)" stroke="#5EE0D0"/>
+              <text x="180" y="110" fill="#EAF0F8" font-size="14" font-weight="700">LLM</text>
+              <text x="180" y="126" fill="#9AA8BD" font-size="9.5">agent</text>
+              <path d="M228 115 H258" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#ar4)"/>
+              <g stroke="#A78BFA" fill="none">
+                <rect x="262" y="78" width="78" height="72" rx="8" fill="rgba(167,139,250,0.15)"/>
+                <line x1="262" y1="96" x2="340" y2="96"/><line x1="262" y1="114" x2="340" y2="114"/><line x1="262" y1="132" x2="340" y2="132"/>
+                <line x1="288" y1="78" x2="288" y2="150"/><line x1="314" y1="78" x2="314" y2="150"/>
+              </g>
+              <text x="301" y="168" fill="#EAF0F8">Database</text>
+            </g>
+            <defs>
+              <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5EE0D0"/></marker>
+              <marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#A78BFA"/></marker>
+            </defs>
+          </svg>
+          <div class="body">
+            <h3>Augmenting targeted protein degradation databases with agentic LLM extraction</h3>
+            <p>An LLM workflow that extracts degradation data from scientific papers to extend existing databases.</p>
+            <p><strong style="color:var(--ink)">Collaborator</strong></p>
+            <ul class="chips"><li>LLMs</li><li>Prompt engineering</li><li>Data extraction</li><li>Evaluation</li></ul>
+            <div class="links">
+              <a href="https://arxiv.org/pdf/2605.11221">Read more</a>
+              <a href="https://github.com/yaochenr/LLM-TPD-Extraction">View code on GitHub</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="A PROTAC ternary complex is predicted by AlphaFold3 and Boltz-1, and the predictions are compared">
+            <g font-family="DM Sans, Segoe UI, sans-serif" font-size="11" text-anchor="middle">
+              <circle cx="44" cy="102" r="20" fill="rgba(94,224,208,0.35)" stroke="#5EE0D0"/>
+              <circle cx="78" cy="128" r="16" fill="rgba(167,139,250,0.35)" stroke="#A78BFA"/>
+              <path d="M58 114 q6 2 8 6" stroke="#EAF0F8" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <text x="60" y="168" fill="#EAF0F8">Ternary complex</text>
+              <path d="M102 110 L136 88" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#ar5)"/>
+              <path d="M102 120 L136 142" stroke="#5EE0D0" stroke-width="2.5" marker-end="url(#ar5)"/>
+              <rect x="140" y="66" width="96" height="40" rx="10" fill="rgba(94,224,208,0.14)" stroke="#5EE0D0"/>
+              <text x="188" y="90" fill="#EAF0F8" font-weight="700">AlphaFold3</text>
+              <rect x="140" y="124" width="96" height="40" rx="10" fill="rgba(167,139,250,0.15)" stroke="#A78BFA"/>
+              <text x="188" y="148" fill="#EAF0F8" font-weight="700">Boltz-1</text>
+              <path d="M240 86 L272 108" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#ar6)"/>
+              <path d="M240 144 L272 122" stroke="#A78BFA" stroke-width="2.5" marker-end="url(#ar6)"/>
+              <circle cx="304" cy="115" r="26" fill="rgba(255,255,255,0.06)" stroke="#9AA8BD" stroke-opacity="0.6"/>
+              <path d="M292 115 l8 8 l15 -16" stroke="#5EE0D0" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="304" y="160" fill="#EAF0F8">Compare</text>
+            </g>
+            <defs>
+              <marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5EE0D0"/></marker>
+              <marker id="ar6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#A78BFA"/></marker>
+            </defs>
+          </svg>
+          <div class="body">
+            <p class="role">Digital Discovery · 2025</p>
+            <h3>Predicting PROTAC-mediated ternary complexes with AlphaFold3 and Boltz-1</h3>
+            <p>Benchmarked AlphaFold3 and Boltz-1 on 62 PROTAC ternary complexes from the Protein Data Bank.</p>
+            <p><strong style="color:var(--ink)">Supervisor and collaborator</strong></p>
+            <ul class="chips"><li>AlphaFold3</li><li>Boltz-1</li><li>Model evaluation</li><li>RDKit</li></ul>
+            <div class="links">
+              <a href="https://pubs.rsc.org/dd/article/4/12/3782/889147/Predicting-PROTAC-mediated-ternary-complexes-with">Read more</a>
+              <a href="https://github.com/NilsDunlop/PROTACFold">View code on GitHub</a>
+            </div>
+          </div>
+        </article>
+
+
+
+        <article class="card">
+          <svg viewBox="0 40 360 150" role="img" aria-label="A regression line through points and a sigmoid curve separating two classes">
+            <g fill="#EAF0F8" opacity="0.8">
+              <circle cx="30" cy="160" r="4"/><circle cx="46" cy="146" r="4"/><circle cx="58" cy="152" r="4"/>
+              <circle cx="74" cy="132" r="4"/><circle cx="88" cy="136" r="4"/><circle cx="102" cy="116" r="4"/>
+              <circle cx="118" cy="120" r="4"/><circle cx="132" cy="100" r="4"/><circle cx="148" cy="96" r="4"/>
+            </g>
+            <line x1="22" y1="164" x2="158" y2="88" stroke="#5EE0D0" stroke-width="4" stroke-linecap="round"/>
+            <line x1="180" y1="70" x2="180" y2="170" stroke="#9AA8BD" stroke-opacity="0.3"/>
+            <g fill="#EAF0F8" opacity="0.8">
+              <circle cx="206" cy="158" r="4"/><circle cx="224" cy="158" r="4"/><circle cx="242" cy="158" r="4"/><circle cx="262" cy="158" r="4"/>
+            </g>
+            <g fill="none" stroke="#A78BFA" stroke-width="2.2">
+              <circle cx="276" cy="76" r="4"/><circle cx="300" cy="76" r="4"/><circle cx="320" cy="76" r="4"/><circle cx="340" cy="76" r="4"/>
+            </g>
+            <path d="M198 158 C 250 158, 258 154, 272 118 S 300 76, 346 76" fill="none" stroke="#5EE0D0" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="body">
+            <h3>Machine learning teaching material</h3>
+            <p>Hands-on notebooks on linear and logistic regression and other core methods, from the data science and AI courses I teach.</p>
+            <p><strong style="color:var(--ink)">Lecturer</strong></p>
+            <ul class="chips"><li>Regression</li><li>Classification</li><li>Python</li><li>scikit-learn</li></ul>
+            <div class="links">
+              <span style="color:var(--muted); font-weight:600">Material coming soon</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <!-- CERTIFICATES: replace each href="#certificates" with the link to your certificate -->
+    <section id="certificates">
+      <h2>Certificates</h2>
+      <p class="sub">Courses I've completed to keep my skills current.</p>
+      <div class="certs">
+        <div class="cert">
+          <span class="badge cs">Co</span>
+          <div>
+            <h3>Machine Learning Specialization</h3>
+            <p>Coursera · 2024</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge dc">DC</span>
+          <div>
+            <h3>MLOps</h3>
+            <p>DataCamp · 2025</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge dc">DC</span>
+          <div>
+            <h3>LLM Concepts</h3>
+            <p>DataCamp · 2025</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge dc">DC</span>
+          <div>
+            <h3>AI Fundamentals</h3>
+            <p>DataCamp · 2025</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge dc">DC</span>
+          <div>
+            <h3>Data Literacy</h3>
+            <p>DataCamp · 2025</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge db">Db</span>
+          <div>
+            <h3>Databricks</h3>
+            <p>Certificate</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+        <div class="cert">
+          <span class="badge sq">SQL</span>
+          <div>
+            <h3>SQL</h3>
+            <p>Certificate</p>
+            <a href="#certificates">View certificate</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Let's talk over a fika ☕</h2>
+      <p class="sub">I'm open to data science and ML engineering roles in Sweden. Send me a message, and let's find a time for coffee.</p>
+      <div class="buttons">
+        <a class="btn primary" href="mailto:farjal2025@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/farzaneh-jalalypour-87a903145">LinkedIn</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>© 2026 Farzaneh Jalalypour · Gothenburg, Sweden</footer>
+
+  <script>
+    // Drifting network of points behind the page
+    (function () {
+      const c = document.getElementById('net'), ctx = c.getContext('2d');
+      const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let w, h, pts = [];
+      function size() {
+        const r = window.devicePixelRatio || 1;
+        w = window.innerWidth; h = window.innerHeight;
+        c.width = w * r; c.height = h * r; ctx.setTransform(r, 0, 0, r, 0, 0);
+        const n = Math.min(70, Math.floor(w * h / 16000));
+        pts = Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35 }));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of pts) {
+          if (!still) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > w) p.vx *= -1; if (p.y < 0 || p.y > h) p.vy *= -1; }
+          ctx.fillStyle = 'rgba(94,224,208,0.5)'; ctx.beginPath(); ctx.arc(p.x, p.y, 1.8, 0, 7); ctx.fill();
+        }
+        for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
+          if (d < 130) { ctx.strokeStyle = 'rgba(167,139,250,' + (0.2 * (1 - d / 130)) + ')'; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke(); }
+        }
+        if (!still) requestAnimationFrame(draw);
+      }
+      size(); draw();
+      window.addEventListener('resize', () => { size(); if (still) draw(); });
+    })();
+  </script>
+</body>
+</html>
